@@ -2,7 +2,6 @@ import sys
 from bank_account import BankAccount
 
 def main():
-    # Initialize account with an example owner and balance
     account = BankAccount("TestUser", 250)
 
     if len(sys.argv) < 2:
@@ -16,10 +15,7 @@ def main():
     if command == "deposit" and amount is not None:
         account.deposit(amount)
     elif command == "withdraw" and amount is not None:
-        try:
-            account.withdraw(amount)
-        except ValueError as e:
-            print(e)  # Prints "Insufficient funds." if withdrawal fails
+        account.withdraw(amount)  # Prints success or "Insufficient funds."
     elif command == "display":
         account.display_balance()
     else:
