@@ -1,25 +1,25 @@
-import sys
 from bank_account import BankAccount
 
 def main():
-    account = BankAccount("TestUser", 250.0)
+    # Create account with owner and initial balance
+    account = BankAccount("Peter", 250)
 
-    if len(sys.argv) < 2:
-        print("Usage: python main-1.py <command>:<amount>")
-        print("Commands: deposit, withdraw, display")
-        sys.exit(1)
+    # Deposit example
+    deposit_amount = 67
+    account.deposit(deposit_amount)  # prints Deposited: $67.0
 
-    command, *params = sys.argv[1].split(':')
-    amount = float(params[0]) if params else None
+    # Withdraw example
+    withdraw_amount = 50
+    if not account.withdraw(withdraw_amount):
+        print("Insufficient funds.")  # only prints if withdraw fails
 
-    if command == "deposit" and amount is not None:
-        account.deposit(amount)
-    elif command == "withdraw" and amount is not None:
-        account.withdraw(amount)  # Prints only once
-    elif command == "display":
-        account.display_balance()
-    else:
-        print("Invalid command.")
+    # Attempt to withdraw more than balance
+    withdraw_amount = 300
+    if not account.withdraw(withdraw_amount):
+        print("Insufficient funds.")
+
+    # Display final balance
+    account.display_balance()  # prints Current Balance: $250.00
 
 if __name__ == "__main__":
     main()
