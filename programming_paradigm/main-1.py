@@ -1,49 +1,29 @@
+import sys
 from bank_account import BankAccount
 
 def main():
-    print("=== Simple Bank Account Program ===")
+    # Initialize account with an example owner and balance
+    account = BankAccount("TestUser", 250)
 
-    # Create an account
-    try:
-        name = input("Enter account owner name: ")
-        initial_balance = float(input("Enter initial balance: "))
-        account = BankAccount(name, initial_balance)
-    except ValueError as e:
-        print(f"Error creating account: {e}")
-        return
+    if len(sys.argv) < 2:
+        print("Usage: python main-1.py <command>:<amount>")
+        print("Commands: deposit, withdraw, display")
+        sys.exit(1)
 
-    while True:
-        print("\nChoose an option:")
-        print("1. Deposit")
-        print("2. Withdraw")
-        print("3. Check Balance")
-        print("4. Exit")
+    command, *params = sys.argv[1].split(':')
+    amount = float(params[0]) if params else None
 
-        choice = input("Enter choice (1-4): ")
-
+    if command == "deposit" and amount is not None:
+        account.deposit(amount)
+    elif command == "withdraw" and amount is not None:
         try:
-            if choice == "1":
-                amount = float(input("Deposit amount: "))
-                new_balance = account.deposit(amount)
-                print(f"Deposit successful. New balance: {new_balance}")
-
-            elif choice == "2":
-                amount = float(input("Withdraw amount: "))
-                new_balance = account.withdraw(amount)
-                print(f"Withdrawal successful. New balance: {new_balance}")
-
-            elif choice == "3":
-                print(f"Current balance: {account.get_balance()}")
-
-            elif choice == "4":
-                print("Goodbye!")
-                break
-
-            else:
-                print("Invalid option. Please enter 1–4.")
-
+            account.withdraw(amount)
         except ValueError as e:
-            print(f"Error: {e}")
+            print(e)  # Prints "Insufficient funds." if withdrawal fails
+    elif command == "display":
+        account.display_balance()
+    else:
+        print("Invalid command.")
 
 if __name__ == "__main__":
     main()
